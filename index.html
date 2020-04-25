@@ -5,25 +5,33 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=false">
 	<link rel="stylesheet" type="text/css" href="style.css">
-	<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@1,300&display=swap" rel="stylesheet">
+	<script src="https://use.fontawesome.com/a8cf35e36f.js"></script>
 
 </head>
 <body>
 
 	<header class="title">
 		<h1>Weather App</h1>
+		<div class="initialize-location">
+			<label for="inp1">Enter the city you want to know about the weather</label>
+			<input autofocus id="inp1" type="text" name="" placeholder="Ex: New York">
+			<label>or</label><br>
+			<button id="pick-current-location">Check weather at my location</button>
+		</div>
 	</header>
 
-
 	<div class="location">
-		<h1 id="tmz">Timezone</h1>
+		<div class="location-data">
+			<h1 id="tmz">Timezone</h1>
+			<h2 id="hour">Hour</h2>
+		</div>
 		<canvas id="icon1" width="128" height="128"></canvas>
 	</div>
 
 	<div class="temperature">
 		<div class="degree-section">
 			<h2 class="temperature-degree">34</h2>
-			<span>C°</span>
+			<span>°C</span>
 		</div>
 		<div class="temperature-description">Its friggin cold</div>
 	</div>
