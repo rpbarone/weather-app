@@ -88,10 +88,12 @@ html, body {
 	border: 0;
 }
 
-.icon {
+.material-icons {
 	height: 1.25rem;
 	width: 1.25rem;
-	background-image: url('search.png');
+	color: #363636;
+	transform: rotate(360deg);
+	text-shadow: none;
 	background-size: cover;
 	position: absolute;
 	margin: 0 auto;
