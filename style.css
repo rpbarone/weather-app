@@ -129,6 +129,10 @@ html, body {
 	.location canvas {
 		padding: 1rem 0 1rem 0;
 	}
+	
+	.material-icons {
+			left: calc(50% + 4.5rem);
+	}
 
 
 }
