@@ -10,6 +10,7 @@ window.addEventListener("load", () => {
 	let initializeLocation = document.querySelector(".initialize-location");
 	let weatherIcon = document.querySelector('.icon');
 	let titleApp = document.querySelector(".title");
+	let icon = document.querySelector(".icon");
 	let body = document.querySelector("body");
 	let input = document.getElementById("inp1");
 	let button = document.getElementById("pick-current-location");
@@ -138,6 +139,13 @@ window.addEventListener("load", () => {
 
 //callbacks
 button.addEventListener("click", getLocation);
+icon.addEventListener("click", () => {
+	let query = input.value;
+	const api2 = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
+	//const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${query}`;
+		fetchWeatherAPI(api2);
+})
+
 input.addEventListener("keyup", (event) => {
 		if(event.keyCode === 13) {
 			let query = input.value;
@@ -146,5 +154,6 @@ input.addEventListener("keyup", (event) => {
 			fetchWeatherAPI(api2);
 		}
 	})
+
 
 })
