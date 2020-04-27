@@ -26,8 +26,9 @@ window.addEventListener("load", () => {
 		lat = position.coords.latitude;
 		long = position.coords.longitude;
 		
-		const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${lat},${long}`;	
-		fetchWeatherAPI(api);
+		const api2 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=70718392a5498c312a96c3f6aa984203&units=metric`
+		//const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${lat},${long}`;	
+		fetchWeatherAPI(api2);
 
 	}
 
@@ -35,13 +36,16 @@ window.addEventListener("load", () => {
 		fetch(api)
 		.then(res => res.json())
 		.then(data => {
+	
 			if (data.success === false) {
 				input.style.border = "2px solid rgba(255,40,0, 0.75)";
 
 			} else {
 			//Set the DOM with the API
-			const { name, localtime } = data.location;
-			const { temperature, weather_descriptions, weather_icons, precip, cloudcover } = data.current;
+			const name = data.name;
+			const { description: weather_descriptions, main: weather_condition, icon } = data.weather[0];
+			const { temp: temperature } = data.main;
+
 
 			locationSection.style.display = "flex";
 			temperatureSection.style.display = "flex";
@@ -49,19 +53,19 @@ window.addEventListener("load", () => {
 			titleApp.style.height = "16vh";
 
 			locationTimezone.textContent = name;
-			temperatureDegree.textContent = Number(temperature + 1);
+			temperatureDegree.textContent = Math.round(temperature);
 			temperatureDescription.textContent = weather_descriptions;
-			hoursLocation.textContent = localtime.match(/\d{2}:\d{2}/g);
-			setWeatherStyle(cloudcover, precip, temperature, localtime);
+			//hoursLocation.textContent = localtime.match(/\d{2}:\d{2}/g);
+			setWeatherStyle(temperature, weather_condition, icon);
 
 			//Set temperature to Fahrenheit
 			temperatureSection.addEventListener("click", () => {
 				if ( temperatureSpan.textContent === "°C") {
 					temperatureSpan.textContent = "°F";
-					temperatureDegree.textContent = Math.round(Number(temperature + 1) * 1.8 + 32);
+					temperatureDegree.textContent = Math.round(Number(temperature) * 1.8 + 32);
 				} else {
 					temperatureSpan.textContent = "°C";
-					temperatureDegree.textContent = Math.round(Number(temperature + 1));
+					temperatureDegree.textContent = Math.round(Number(temperature));
 				}
 			})
 			
@@ -92,22 +96,21 @@ window.addEventListener("load", () => {
 		}
 	}
 
-	const setWeatherStyle = (cloudcover, precip, temperature, localtime) => {
+	const setWeatherStyle = (temperature, weather_condition, icon) => {
 		const skycons = new Skycons({color: 'white'});
 		skycons.play();
-		let hours = localtime.match(/\d{2}:\d{2}/);
-		hours[0] = hours[0].slice(0, 2);
+		let regex = 'd$';
+		let verifyState = new RegExp(regex, 'g');
 		let day;
-		
 
-		if (Number(hours[0]) >= 6 && Number(hours[0]) < 19) {
+		if (verifyState.test(icon) === true) {
 			day = true;
 		} else {
 			day = false;
 		}
 
 		// The day states
-		if (day === true && cloudcover <= 40 && precip < 1.5) {
+		if (day === true && weather_condition === "Clear") {
 			skycons.add("icon1", Skycons.CLEAR_DAY);
 			body.style.background = `linear-gradient(#C02425, #F0CB35)`;
 
@@ -115,21 +118,18 @@ window.addEventListener("load", () => {
 				body.style.background = `linear-gradient(#283048, #859398)`;
 			}
 
-		} else if (day === true && (cloudcover >= 40 && cloudcover < 78) && precip < 1.5) {
+		} else if (day === true && weather_condition === "Clouds") {
 			skycons.add("icon1", Skycons.PARTLY_CLOUDY_DAY);
 			body.style.background = `linear-gradient(#1488CC, #2B32B2)`;
 		// The night states
-		} else if (day === false && cloudcover <= 40 && precip < 1.5) {
+		} else if (day === false && weather_condition === "Clear") {
 			skycons.add("icon1", Skycons.CLEAR_NIGHT);
 			body.style.background = `linear-gradient(#000428, #004e92)`;
-		} else if (day === false && (cloudcover >= 40 && cloudcover < 76) && precip < 1.5) {
+		} else if (day === false && weather_condition === "Clouds") {
 			skycons.add("icon1", Skycons.PARTLY_CLOUDY_NIGHT);
 			body.style.background = `linear-gradient(#232526, #414345)`
-		} //cloudy and rain
-		  else if (cloudcover >= 76) {
-		  	skycons.add("icon1", Skycons.CLOUDY);
-		  	body.style.background = `linear-gradient(#E6DADA, #274046)`;	
-		} else if (precip >= 1.5) {
+		} //rain state
+		 else if (weather_condition === "Rain") {
 			skycons.add("icon1", Skycons.RAIN);  
 			body.style.background = `linear-gradient(#525252, #3d72b4)`;
 		}
@@ -141,8 +141,9 @@ button.addEventListener("click", getLocation);
 input.addEventListener("keyup", (event) => {
 		if(event.keyCode === 13) {
 			let query = input.value;
-			const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${query}`;
-			fetchWeatherAPI(api);
+			const api2 = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
+			//const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${query}`;
+			fetchWeatherAPI(api2);
 		}
 	})
 
