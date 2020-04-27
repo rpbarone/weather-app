@@ -35,7 +35,138 @@ html, body {
 	justify-content: center;
 	text-align: center;
 }
+*{
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+	font-family: 'Open sans', sans-serif;
+}
 
+html, body {
+	height: 100%;
+	width: 100%;
+	background: linear-gradient(#43cea2, #185a9d);
+	color: white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+
+.location,
+.temperature {
+	height: 30%;
+	width: 50%;
+	display: none;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.title {
+	height: 30%;
+	font-size: 2.62rem;
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+}
+
+.initialize-location button {
+	margin: .75rem 0 .75rem 0;
+	padding: 1rem 1.5rem;
+	border: 1px solid #274046;
+	border-radius: 12px;
+	color: white;
+	background: linear-gradient(38deg, #c21500, #ffc500);
+	outline: 0;
+	font-weight: 400;
+	cursor: pointer;
+}
+
+.title button:hover {
+	border: 1px solid #222222;
+	background: linear-gradient(38deg, #274046, #161616);
+}
+
+.temperature {
+	flex-direction: column;
+	justify-content: space-around;
+}
+
+.degree-section {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+
+}
+
+.degree-section span {
+	margin-left: 5px;
+	font-size: 30px;
+}
+
+.degree-section h2 {
+	font-size: 40px;
+}
+
+.initialize-location {
+	font-size: 1.2rem;
+	height: 100%;
+}
+
+.initialize-location input {
+	display: block;
+	margin: 20px auto;
+	padding: 3% 1.5rem;
+	border-radius: 12px;
+	outline: 0;
+	border: 0;
+}
+
+.icon {
+	height: 1.25rem;
+	width: 1.25rem;
+	background-image: url('search.png');
+	background-size: cover;
+	position: absolute;
+	margin: 0 auto;
+	left: calc(50% + 4rem);
+	cursor: pointer;
+}
+
+.search-city {
+	display: flex;
+	align-items: center;
+	position: relative;
+}
+
+@media screen and (max-width: 560px) {
+
+	body {
+		padding: 0 1.5%;
+	}
+
+	.title {
+		font-size: 1.4rem;
+	}
+
+	.initialize-location {
+		font-size: 1rem;
+	}
+
+	.location {
+		flex-direction: column;
+		justify-content: space-between;
+	}
+
+	.location canvas {
+		padding: 1rem 0 1rem 0;
+	}
+
+
+}
 .initialize-location button {
 	margin: .75rem 0 .75rem 0;
 	padding: 1rem 1.5rem;
