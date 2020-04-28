@@ -1,122 +1,92 @@
 window.addEventListener("load", () => {
-	let lat;
-	let long;
-	let locationTimezone = document.getElementById("tmz");
-	let temperatureDegree = document.querySelector(".temperature-degree");
-	let temperatureDescription = document.querySelector(".temperature-description");
-	let temperatureSection = document.querySelector(".temperature");
-	let temperatureSpan = document.querySelector(".degree-section span");
-	let locationSection = document.querySelector(".location");
-	let initializeLocation = document.querySelector(".initialize-location");
-	let weatherIcon = document.querySelector('.icon');
-	let titleApp = document.querySelector(".title");
-	let icon = document.querySelector(".material-icons");
-	let body = document.querySelector("body");
-	let input = document.getElementById("inp1");
-	let button = document.getElementById("pick-current-location");
-	let hoursLocation = document.getElementById("hour");
+	////////////////// APP INITIALIZE ///////////////
+const body = document.querySelector("body");
+const main = document.querySelector(".initialize-app");
+const searchMainIcon = document.getElementsByClassName("s-icon")[0];
+const searchIcon = document.getElementsByClassName("s-icon")[1];
+const searchInput = document.querySelector("#search-input");
+const getUserLocation = document.querySelector(".get-user-location");
+const tooltip = document.querySelector(".tooltip");
+const button = document.querySelector("#btn");
+////////////////// APP BAR /////////////////////
+const appBar = document.querySelector(".app-bar");
+const homeIcon = document.querySelector("#h-icon");
+const searchCity = document.querySelector("#search-city");
+////////////////// WEATHER DATA ////////////////
+const mainWd = document.querySelector(".weather-data");
+const timezone = document.querySelector("#timezone");
+const icon = document.querySelector("#icon");
+const temperatureDegree = document.querySelector("#temperature");
+const degreeSymbol = document.querySelector("#degree-symbol");
+const weatherDescription = document.querySelector("#description");
+const temperatureSection = document.querySelector(".temperature-degree");
+////////////////////////////////////////////////
 
-	
-	const getLocation = () => {
-		if (navigator.geolocation) {
-			navigator.geolocation.getCurrentPosition(showPosition, showError);
-		}
+///////////////// FUNCTIONS ///////////////////
+
+const getLocation = () => {
+	if (navigator.geolocation) {
+		navigator.geolocation.getCurrentPosition(showPosition);
 	}
+}
 
-	const showPosition = (position) => {
-		lat = position.coords.latitude;
-		long = position.coords.longitude;
-		
-		const api2 = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=70718392a5498c312a96c3f6aa984203&units=metric`
-		//const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${lat},${long}`;	
-		fetchWeatherAPI(api2);
+const showPosition = (position) => {
+	let lat = position.coords.latitude;
+	let long = position.coords.longitude;
 
-	}
+	const api = `https://api.openweathermap.org/data/2.5/weather?
+	lat=${lat}&lon=${long}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
 
-	const fetchWeatherAPI = (api) => {
-		fetch(api)
-		.then(res => res.json())
-		.then(data => {
-			if (data.cod === '404') {
-				input.style.border = "2px solid rgba(255,40,0, 0.75)";
-				let div = document.createElement("div");
-				let msg = document.createTextNode("City not found!");
-				div.appendChild(msg);
-				div.style.fontSize = "0.9rem";
-				initializeLocation.appendChild(div);
+	fetchWeatherAPI(api);
+}
 
-			} else {
-			//Set the DOM with the API
-			const name = data.name;
-			const { description: weather_descriptions, main: weather_condition, icon } = data.weather[0];
-			const { temp: temperature } = data.main;
+const fetchWeatherAPI = (api) => {
+	fetch(api)
+	.then(res => res.json())
+	.then(data => {
+		if (data.cod === '404') {
+			tooltip.style.display = "block";
 
+			setTimeout(() => {
+				tooltip.style.display = "none";
+			}, 1400)
 
-			locationSection.style.display = "flex";
-			temperatureSection.style.display = "flex";
-			initializeLocation.style.display = "none";
-			titleApp.style.height = "16vh";
-
-			locationTimezone.textContent = name;
-			temperatureDegree.textContent = Math.round(temperature);
-			temperatureDescription.textContent = weather_descriptions;
-			//hoursLocation.textContent = localtime.match(/\d{2}:\d{2}/g);
-			setWeatherStyle(temperature, weather_condition, icon);
-
-			//Set temperature to Fahrenheit
-			temperatureSection.addEventListener("click", () => {
-				if ( temperatureSpan.textContent === "°C") {
-					temperatureSpan.textContent = "°F";
-					temperatureDegree.textContent = Math.round(Number(temperature) * 1.8 + 32);
-				} else {
-					temperatureSpan.textContent = "°C";
-					temperatureDegree.textContent = Math.round(Number(temperature));
-				}
-			})
-			
-		
-			}
-
-		})
-	}
-
-
-	const showError = (error) => {
-		switch (error.code) {
-			case error.PERMISSION_DENIED:
-			alert("User denied the request for Geolocation");
-			break;
-
-			case error.POSITION_UNAVAILABLE:
-			alert("Location information is unavailable");
-			break;
-
-			case error.TIMEOUT:
-			alert("The request to get user location timed out");
-			break;
-
-			case error.UNKNOWN_ERROR:
-			alert("An unknown error ocurred");
-			break;
-		}
-	}
-
-	const setWeatherStyle = (temperature, weather_condition, icon) => {
-		const skycons = new Skycons({color: 'white'});
-		skycons.play();
-		let regex = 'd$';
-		let verifyState = new RegExp(regex, 'g');
-		let day;
-
-		if (verifyState.test(icon) === true) {
-			day = true;
 		} else {
-			day = false;
-		}
+			////////////////// API DATA ////////////////
+			const name = data.name;
+			const { description, main: weather_condition, icon } = data.weather[0];
+			const { temp: temperature } = data.main;
+			/////////// Set the DOM with API //////////
+			mainWd.style.display = "flex";
+			appBar.style.display = "flex";
+			main.style.display = "none";
 
-		// The day states
+			timezone.textContent = name;
+			temperatureDegree.textContent = Math.round(temperature);
+			weatherDescription.textContent = description;
+
+			setWeatherStyle(temperature, weather_condition, icon);
+			setSearchValue();
+		}
+	})
+}
+
+const setWeatherStyle = (temperature, weather_condition, icon) => {
+	const skycons = new Skycons({ color: 'white' });
+	skycons.play(); // start animation
+
+	let verifyState = new RegExp('d$', 'g');
+	let day;
+
+	if (verifyState.test(icon) === true) {
+		day = true;
+	} else {
+		day = false;
+	}
+
+	    // The day states
 		if (day === true && weather_condition === "Clear") {
-			skycons.add("icon1", Skycons.CLEAR_DAY);
+			skycons.add("icon", Skycons.CLEAR_DAY);
 			body.style.background = `linear-gradient(#C02425, #F0CB35)`;
 
 			if(temperature < 23) {
@@ -124,40 +94,84 @@ window.addEventListener("load", () => {
 			}
 
 		} else if (day === true && weather_condition === "Clouds") {
-			skycons.add("icon1", Skycons.PARTLY_CLOUDY_DAY);
+			skycons.add("icon", Skycons.PARTLY_CLOUDY_DAY);
 			body.style.background = `linear-gradient(#1488CC, #2B32B2)`;
 		// The night states
 		} else if (day === false && weather_condition === "Clear") {
-			skycons.add("icon1", Skycons.CLEAR_NIGHT);
+			skycons.add("icon", Skycons.CLEAR_NIGHT);
 			body.style.background = `linear-gradient(#000428, #004e92)`;
 		} else if (day === false && weather_condition === "Clouds") {
-			skycons.add("icon1", Skycons.PARTLY_CLOUDY_NIGHT);
+			skycons.add("icon", Skycons.PARTLY_CLOUDY_NIGHT);
 			body.style.background = `linear-gradient(#232526, #414345)`
 		} //rain state
 		 else if (weather_condition === "Rain") {
-			skycons.add("icon1", Skycons.RAIN);  
+			skycons.add("icon", Skycons.RAIN);  
 			body.style.background = `linear-gradient(#525252, #3d72b4)`;
 		}
 
+		//Set temperature to Fahrenheit
+			temperatureSection.addEventListener("click", () => {
+				if ( degreeSymbol.textContent === "°C") {
+					degreeSymbol.textContent = "°F";
+					temperatureDegree.textContent = Math.round(Number(temperature) * 1.8 + 32);
+				} else {
+					degreeSymbol.textContent = "°C";
+					temperatureDegree.textContent = Math.round(Number(temperature));
+				}
+			})
 	}
 
-//callbacks
+	const setSearchValue = () => {
+		searchCity.value = searchInput.value;
+
+		searchCity.addEventListener("click", () => {
+			searchCity.value = "";
+		})
+	}
+
+	const returnMain = () => {
+		mainWd.style.display = "none";
+		appBar.style.display = "none";
+		main.style.display = "flex";
+		body.style.background = `linear-gradient(#43cea2, #185a9d)`;
+		searchInput.value = "";
+	}
+
+/////////////////////////////////////////////
+
+////////////// CALLBACKS ///////////////////
 button.addEventListener("click", getLocation);
-icon.addEventListener("click", () => {
-	let query = input.value;
-	const api2 = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
-	//const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${query}`;
-		fetchWeatherAPI(api2);
+homeIcon.addEventListener("click", returnMain);
+
+searchMainIcon.addEventListener("click", () => {
+	let query = searchInput.value;
+	const api = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
+	fetchWeatherAPI(api);
 })
 
-input.addEventListener("keyup", (event) => {
+searchInput.addEventListener("keyup", (event) => {
 		if(event.keyCode === 13) {
-			let query = input.value;
-			const api2 = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
-			//const api = `http://api.weatherstack.com/current?access_key=79385e97b07a4948a7df68e196a6f759&query=${query}`;
-			fetchWeatherAPI(api2);
+			let query = searchInput.value;
+			const api = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
+			fetchWeatherAPI(api);
 		}
-	})
+})
 
+
+
+searchCity.addEventListener("keyup", (event) => {
+		if(event.keyCode === 13) {
+			let query = searchCity.value;
+			const api = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
+			fetchWeatherAPI(api);
+			searchInput.value = searchCity.value;
+		}
+})
+
+searchIcon.addEventListener("click", () => {
+	let query = searchInput.value;
+	const api = `https://api.openweathermap.org/data/2.5/weather?q=${query}&appid=70718392a5498c312a96c3f6aa984203&units=metric`;
+	fetchWeatherAPI(api);
+})
 
 })
