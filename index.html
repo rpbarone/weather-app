@@ -6,36 +6,60 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=false">
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
 </head>
 <body>
+	
+	<section class="initialize-app">
+		<header>
+			<h1>Weather App</h1>
+			<p>Enter the city you want to know about the weather</p>
+		</header>
 
-	<header class="title">
-		<h1>Weather App</h1>
-		<div class="initialize-location">
-			<label for="inp1">Enter the city you want to know about the weather</label>
-			<div class="search-city">
-				<input autofocus id="inp1" type="text" name="" placeholder="Ex: New York">
-				<span class="material-icons">search</span>
+		<div class="input">
+			<input autofocus id="search-input" type="text" placeholder="Ex: New York" name="">
+			<span class="s-icon material-icons">search</span>
+			<div data-tooltip="City not found!" class="tooltip"></div>
+		</div>
+
+		<div class="get-user-location">
+			<span>or</span>
+			<button id="btn">Check weather at my location</button>
+		</div>
+	</section>
+
+
+	<section class="weather-data">	
+
+		<div class="location">
+			<h3 id="timezone">City</h3>
+			<canvas id="icon" width="128" height="128"></canvas>
+		</div>
+
+		<div class="temperature">
+			<div class="temperature-degree">
+				<p id="temperature">5</p>
+				<span id="degree-symbol">°C</span>
+				<div data-tooltip="click on the temperature to change to fahrenheit" class="tooltip-temp"></div>
 			</div>
-			<label>or</label><br>
-			<button id="pick-current-location">Check weather at my location</button>
+
+			<div class="temperature-description">
+				<p id="description">cloudy</p>
+			</div>
 		</div>
-	</header>
 
-	<div class="location">
-			<h1 id="tmz">Timezone</h1>
-		<canvas id="icon1" width="128" height="128"></canvas>
-	</div>
+	</section>
 
-	<div class="temperature">
-		<div class="degree-section">
-			<h2 class="temperature-degree">34</h2>
-			<span>°C</span>
-		</div>
-		<div class="temperature-description">Its friggin cold</div>
-	</div>
+	<nav class="app-bar">
+			<div class="input-city">
+				<input id="search-city" type="text" name="" value="New York">
+				<span class="s-icon material-icons">search</span>
+			</div>
 
-<script type="text/javascript" src="skycons.js"></script>
+			<span id="h-icon" class="material-icons">home</span>
+	</nav>
+
 <script type="text/javascript" src="index.js"></script>
+<script type="text/javascript" src="skycons.js"></script>
 </body>
 </html>
