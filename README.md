@@ -22,7 +22,7 @@ Or you can access it through the [direct link](https://rpbarone.github.io/weathe
   
   ![](wheaterapp-readme4.png)
   
-  `So, make sure you are typing the corret name of the city and searching that name in English.`
+  `So, make sure you are typing the correct name of the city and searching that name in English.`
 
 * Get information about your current location
   * For this option, you must allow access to your location.
@@ -33,7 +33,8 @@ Or you can access it through the [direct link](https://rpbarone.github.io/weathe
   
 As you see, you can get:
 * Temperature degree
-* A funny icon animated [Skycon](https://darkskyapp.github.io/skycons/) showing different states of weather, as too or parcially cloud, sunny or if we only have a beautiful moon in the sky! 
+* Weather description
+* A funny icon animated [Skycon](https://darkskyapp.github.io/skycons/) showing different states of weather, as too or parcially cloudy, sunny or also we could have a beautiful moon it's already night in the city we're looking for.
 
   * And more: **The background changes its color according to the climatic conditions.** Try it in different locations of the world to see.
 
